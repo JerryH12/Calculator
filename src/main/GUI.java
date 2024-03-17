@@ -8,9 +8,7 @@ import java.awt.event.ActionEvent;
 
 public class GUI extends JFrame 
 {
-	
-		public JTextField textField;
-		
+		public JTextField textField;	
 		private MyEventHandler handler;
 		String input="";
 		
@@ -111,6 +109,7 @@ public class GUI extends JFrame
 				else if(event.getActionCommand() == "C")
 				{
 					textField.setText("");
+					input = "";
 				}
 				else
 				{
