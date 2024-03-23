@@ -14,33 +14,41 @@ public class Calculator {
 	public static double prepareCalculation(String c) 
 	{
 		ArrayList<Operator> operators = new ArrayList<Operator>();
+		boolean closedParenthesis = false;
 		
 		for(int i=0; i<c.length(); i++) {
 			
 			if(isOperator(c.charAt(i)))
 			{
-				Operator op1 = new Operator();				
-				op1.firstValue=stringToDecimalLeft(c, i-1);	
+				Operator op1 = new Operator();
+				
+				if(closedParenthesis) {
+					op1.firstValue = operators.get(operators.size() - 1).secondValue;
+					closedParenthesis = false;
+				}
+				else {
+					op1.firstValue=stringToDecimalLeft(c, i-1);	
+				}
+				
 				op1.operator=Character.toString(c.charAt(i));
 				
 				// Check parenthesis.
 				if(c.charAt(i+1) == '(') 
 				{		
-					// TODO: replace with better function.
-					//int j = c.lastIndexOf(')');
 					
-					/* TODO: Bugg with parentheses at the same depth.
-					 * This still doesn't work properly. Wrong result.
-					 */
-					int j = indexOfClosedParenthesis(i+1, c); // Begin at the first open parenthesis.
+					int j = indexOfClosedParenthesis(i+1, c);
 					
 					// Recursive call and return calculated value.
 					op1.secondValue=prepareCalculation(c.substring(i+2, j));
 					operators.add(op1);
 					
-					i = j+1; // Jump forward to position after parentheses.
-						
+					// Jump forward to position after parentheses.
+					//i = j+1; 
+					i=j;
+					closedParenthesis = true;
+					
 					// If calculation doesn't end with parenthesis.
+					/*
 					if((i+1) < c.length()) {
 						Operator op2 = new Operator();
 						op2.firstValue = op1.secondValue;
@@ -48,7 +56,7 @@ public class Calculator {
 						op2.secondValue = stringToDecimalRight(c, i+1);
 							
 						operators.add(op2);
-					}
+					}*/
 				}
 				else
 				{	
@@ -89,49 +97,61 @@ public class Calculator {
 
 	private static double stringToDecimalLeft(String c, int i) {
 		
-		double number=0;
-		int decimal=1;
-			
-		while(i >= 0) 
-		{
-			if(isOperator(c.charAt(i))){
-				break;
-			}
-			
-			if(c.charAt(i) == ',') 
+		try {
+			double number=0;
+			int decimal=1;
+				
+			while(i >= 0) 
 			{
-				number = (number / decimal);
-				decimal = 1;
+				if(isOperator(c.charAt(i))){
+					break;
+				}
+				
+				if(c.charAt(i) == ',') 
+				{
+					number = (number / decimal);
+					decimal = 1;
+					i--;
+					continue;
+				}
+				
+				number+=Character.getNumericValue(c.charAt(i))*decimal;
+				decimal*=10;
+				
 				i--;
-				continue;
 			}
 			
-			number+=Character.getNumericValue(c.charAt(i))*decimal;
-			decimal*=10;
-			
-			i--;
+			return number;
 		}
-		
-		return number;
+		catch (Exception ex) {
+			System.out.print(ex);
+			return 0;
+		}
 	}
 	
 	private static double stringToDecimalRight(String c, int i) {
 			
-		String stringNumber = "";
-		
-		while(i < c.length()) 
-		{
-			if(isOperator(c.charAt(i)))
+		try {
+			String stringNumber = "";
+			
+			while(i < c.length()) 
 			{
-				break;
+				if(isOperator(c.charAt(i)))
+				{
+					break;
+				}
+				
+				stringNumber += c.charAt(i);
+				i++;
 			}
 			
-			stringNumber += c.charAt(i);
-			i++;
+			double number = stringToDecimalLeft(stringNumber, stringNumber.length()-1);
+			return number;
 		}
-		
-		double number = stringToDecimalLeft(stringNumber, stringNumber.length()-1);
-		return number;
+		catch (Exception ex) {
+			System.out.print(ex.getMessage());
+			return 0;
+		}
 	}
 
 	private static boolean isOperator(char c) {
