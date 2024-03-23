@@ -26,20 +26,29 @@ public class Calculator {
 				// Check parenthesis.
 				if(c.charAt(i+1) == '(') 
 				{		
-					int j = c.lastIndexOf(')');
+					// TODO: replace with better function.
+					//int j = c.lastIndexOf(')');
+					
+					/* TODO: Bugg with parentheses at the same depth.
+					 * This still doesn't work properly. Wrong result.
+					 */
+					int j = indexOfClosedParenthesis(i+1, c); // Begin at the first open parenthesis.
 					
 					// Recursive call and return calculated value.
 					op1.secondValue=prepareCalculation(c.substring(i+2, j));
+					operators.add(op1);
 					
 					i = j+1; // Jump forward to position after parentheses.
 						
-					Operator op2 = new Operator();
-					op2.firstValue = op1.secondValue;
-					op2.operator=Character.toString(c.charAt(i));
-					op2.secondValue = stringToDecimalRight(c, i+1);
-					
-					operators.add(op1);
-					operators.add(op2);
+					// If calculation doesn't end with parenthesis.
+					if((i+1) < c.length()) {
+						Operator op2 = new Operator();
+						op2.firstValue = op1.secondValue;
+						op2.operator=Character.toString(c.charAt(i));
+						op2.secondValue = stringToDecimalRight(c, i+1);
+							
+						operators.add(op2);
+					}
 				}
 				else
 				{	
@@ -53,6 +62,31 @@ public class Calculator {
 		return calculate(operators);
 	}
 	
+	// Where possibly nested parenthesis closes.
+	private static int indexOfClosedParenthesis(int startIndex, String str) {
+		int counter = 0;
+		int index = startIndex;
+		
+		while(index < str.length()) {
+			
+			if(str.charAt(index) == '(') {
+				counter++;
+			}
+			
+			if(str.charAt(index) == ')') {
+				counter--;	
+			}
+				
+			if(counter == 0) {
+				break;
+			}
+			
+			index++;
+		} 
+		
+		return index;
+	}
+
 	private static double stringToDecimalLeft(String c, int i) {
 		
 		double number=0;
