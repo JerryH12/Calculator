@@ -4,51 +4,89 @@ import java.util.*;
 import javax.swing.JFrame;
 
 public class Calculator {
-
-	private static ArrayList<Operator> operators;
 	
 	public static void main(String[] args) {
 		GUI gui1 = new GUI();
 		gui1. setVisible(true);
 		gui1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//run();
 	}
 	
-	public static void run() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Ange en beräkning. Exempelvis (n+n).");
-		String calc=sc.next();
-		sc.close();
-		
-		prepareCalculation(calc);
-		calculate();
-	}
-	
-	public static void prepareCalculation(String c) {
-			
-		operators = new ArrayList<Operator>();
+	public static double prepareCalculation(String c) 
+	{
+		ArrayList<Operator> operators = new ArrayList<Operator>();
 		
 		for(int i=0; i<c.length(); i++) {
 			
-			
 			if(isOperator(c.charAt(i)))
 			{
-				Operator op = new Operator();
+				Operator op1 = new Operator();				
+				op1.firstValue=stringToDecimalLeft(c, i-1);	
+				op1.operator=Character.toString(c.charAt(i));
 				
-				
-				op.firstValue=stringToDecimalLeft(c, i-1);
-				
-				op.operator=Character.toString(c.charAt(i));
-				
-				
-				op.secondValue=stringToDecimalRight(c, i+1);
-				operators.add(op);
-				
-			
+				// Check parenthesis.
+				if(c.charAt(i+1) == '(') 
+				{		
+					// TODO: replace with better function.
+					//int j = c.lastIndexOf(')');
+					
+					/* TODO: Bugg with parentheses at the same depth.
+					 * This still doesn't work properly. Wrong result.
+					 */
+					int j = indexOfClosedParenthesis(i+1, c); // Begin at the first open parenthesis.
+					
+					// Recursive call and return calculated value.
+					op1.secondValue=prepareCalculation(c.substring(i+2, j));
+					operators.add(op1);
+					
+					i = j+1; // Jump forward to position after parentheses.
+						
+					// If calculation doesn't end with parenthesis.
+					if((i+1) < c.length()) {
+						Operator op2 = new Operator();
+						op2.firstValue = op1.secondValue;
+						op2.operator=Character.toString(c.charAt(i));
+						op2.secondValue = stringToDecimalRight(c, i+1);
+							
+						operators.add(op2);
+					}
+				}
+				else
+				{	
+					// Without parentheses.		
+					op1.secondValue=stringToDecimalRight(c, i+1);
+					operators.add(op1);
+				}	
 			}
 		}	
+		
+		return calculate(operators);
 	}
 	
+	// Where possibly nested parenthesis closes.
+	private static int indexOfClosedParenthesis(int startIndex, String str) {
+		int counter = 0;
+		int index = startIndex;
+		
+		while(index < str.length()) {
+			
+			if(str.charAt(index) == '(') {
+				counter++;
+			}
+			
+			if(str.charAt(index) == ')') {
+				counter--;	
+			}
+				
+			if(counter == 0) {
+				break;
+			}
+			
+			index++;
+		} 
+		
+		return index;
+	}
+
 	private static double stringToDecimalLeft(String c, int i) {
 		
 		double number=0;
@@ -60,7 +98,8 @@ public class Calculator {
 				break;
 			}
 			
-			if(c.charAt(i) == ',') {
+			if(c.charAt(i) == ',') 
+			{
 				number = (number / decimal);
 				decimal = 1;
 				i--;
@@ -82,7 +121,8 @@ public class Calculator {
 		
 		while(i < c.length()) 
 		{
-			if(isOperator(c.charAt(i))){
+			if(isOperator(c.charAt(i)))
+			{
 				break;
 			}
 			
@@ -101,8 +141,8 @@ public class Calculator {
 		return false;
 	}
 	
-	public static double calculate() {
-		
+	public static double calculate(ArrayList<Operator> operators) 
+	{	
 		String[] op={"*","/","+","-"};
 	
 		int j;
