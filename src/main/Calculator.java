@@ -15,55 +15,55 @@ public class Calculator {
 	{
 		ArrayList<Operator> operators = new ArrayList<Operator>();
 		boolean closedParenthesis = false;
+		double parenthesisResult = 0;
 		
-		for(int i=0; i<c.length(); i++) {
+		for(int i = 0; i < c.length(); i++) {
+				
+			// Check parenthesis.
+			if(c.charAt(i) == '(') 
+			{		
+				int j = indexOfClosedParenthesis(i, c);
+					
+				// Recursive call and return calculated value.
+				parenthesisResult=prepareCalculation(c.substring(i+1, j));
+					
+				// Jump forward to position after parentheses.
+				i=j;
+				closedParenthesis = true;
+				
+				if(i == c.length()-1) {
+					operators.get(operators.size() - 1).secondValue = parenthesisResult;
+				}
+			}
 			
 			if(isOperator(c.charAt(i)))
-			{
+			{	
 				Operator op1 = new Operator();
 				
 				if(closedParenthesis) {
-					op1.firstValue = operators.get(operators.size() - 1).secondValue;
+					
+					op1.firstValue = parenthesisResult;
 					closedParenthesis = false;
+					
+					if(operators.size() > 0) {		
+						operators.get(operators.size() - 1).secondValue = op1.firstValue;		
+					}
 				}
-				else {
+				else {	
 					op1.firstValue=stringToDecimalLeft(c, i-1);	
+				}
+				
+				if(c.charAt(i+1) != '(') {		
+					op1.secondValue = stringToDecimalRight(c, i+1);
+					
+					if(c.charAt(i) == '-') {
+						op1.secondValue *= -1;
+					}
 				}
 				
 				op1.operator=Character.toString(c.charAt(i));
 				
-				// Check parenthesis.
-				if(c.charAt(i+1) == '(') 
-				{		
-					
-					int j = indexOfClosedParenthesis(i+1, c);
-					
-					// Recursive call and return calculated value.
-					op1.secondValue=prepareCalculation(c.substring(i+2, j));
-					operators.add(op1);
-					
-					// Jump forward to position after parentheses.
-					//i = j+1; 
-					i=j;
-					closedParenthesis = true;
-					
-					// If calculation doesn't end with parenthesis.
-					/*
-					if((i+1) < c.length()) {
-						Operator op2 = new Operator();
-						op2.firstValue = op1.secondValue;
-						op2.operator=Character.toString(c.charAt(i));
-						op2.secondValue = stringToDecimalRight(c, i+1);
-							
-						operators.add(op2);
-					}*/
-				}
-				else
-				{	
-					// Without parentheses.		
-					op1.secondValue=stringToDecimalRight(c, i+1);
-					operators.add(op1);
-				}	
+				operators.add(op1);	
 			}
 		}	
 		
@@ -104,6 +104,9 @@ public class Calculator {
 			while(i >= 0) 
 			{
 				if(isOperator(c.charAt(i))){
+					if(c.charAt(i) == '-') {
+						number *= -1;
+					}
 					break;
 				}
 				

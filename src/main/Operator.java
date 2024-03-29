@@ -28,7 +28,8 @@ public class Operator {
 				result=add();
 				break;
 			case "-":
-				result= subtract();
+				//result= subtract();
+				result=add();
 				break;
 			default:
 				result=0;

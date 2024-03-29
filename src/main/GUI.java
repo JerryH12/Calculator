@@ -99,6 +99,54 @@ public class GUI extends JFrame
 		    		add(newButton);
 		    	}
 		    }
+		    
+		    //TODO: Använda GridBagLayout
+		    
+			// Create a panel with GridBagLayout
+	 /*       JPanel panel = new JPanel(new GridBagLayout());
+
+	        // Create components (buttons, labels, etc.)
+	        JButton button1 = new JButton("C");
+		   
+		    button1.addActionListener(handler);
+	        JButton button2 = new JButton("Button 2");
+	        JButton button3 = new JButton("Button 3");
+	        JButton button4 = new JButton("Button 4");
+	        JButton button5 = new JButton("Button 5");
+
+	        // Set constraints for each component
+	        GridBagConstraints constraints = new GridBagConstraints();
+	        constraints.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
+	        constraints.weightx = 1.0; // Expand horizontally
+	        constraints.weighty = 1.0; // Expand vertically
+
+	        // Add components to the panel
+	        constraints.gridx = 0;
+	        constraints.gridy = 0;
+	        panel.add(button1, constraints);
+
+	        constraints.gridx = 1;
+	        constraints.gridy = 0;
+	        panel.add(button2, constraints);
+
+	        constraints.gridx = 0;
+	        constraints.gridy = 1;
+	        constraints.gridwidth = 2; // Span 2 columns
+	        panel.add(button3, constraints);
+
+	        constraints.gridx = 2;
+	        constraints.gridy = 0;
+	        panel.add(button4, constraints);
+
+	        constraints.gridx = 0;
+	        constraints.gridy = 2;
+	        constraints.gridwidth = 3; // Span all columns
+	        panel.add(button5, constraints);
+
+		    
+		    add(panel);*/
+		    
+		    
 		}	
 		
 		private class MyEventHandler implements ActionListener 
