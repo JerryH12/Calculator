@@ -7,6 +7,7 @@ public class Calculator {
 	
 	public static void main(String[] args) {
 		GUI gui1 = new GUI();
+		gui1.pack();
 		gui1. setVisible(true);
 		gui1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
