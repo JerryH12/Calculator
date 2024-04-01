@@ -1,4 +1,6 @@
 package main;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 import javax.swing.JFrame;
@@ -6,6 +8,8 @@ import javax.swing.JFrame;
 public class Calculator {
 	
 	public static void main(String[] args) {
+		
+		
 		GUI gui1 = new GUI();
 		gui1.pack();
 		gui1. setVisible(true);
@@ -14,61 +18,84 @@ public class Calculator {
 	
 	public static double prepareCalculation(String c) 
 	{
-		ArrayList<Operator> operators = new ArrayList<Operator>();
-		boolean closedParenthesis = false;
-		double parenthesisResult = 0;
-		
-		for(int i = 0; i < c.length(); i++) {
-				
-			// Check parenthesis.
-			if(c.charAt(i) == '(') 
-			{		
-				int j = indexOfClosedParenthesis(i, c);
+		try {
+			ArrayList<Operator> operators = new ArrayList<Operator>();
+			boolean closedParenthesis = false;
+			double parenthesisResult = 0;
+							
+			for(int i = 0; i < c.length(); i++) {
 					
-				// Recursive call and return calculated value.
-				parenthesisResult=prepareCalculation(c.substring(i+1, j));
+				// Check parenthesis.
+				if(c.charAt(i) == '(') 
+				{		
+					int j = indexOfClosedParenthesis(i, c);
+						
+					// Recursive call and return calculated value.
+					parenthesisResult=prepareCalculation(c.substring(i+1, j));
 					
-				// Jump forward to position after parentheses.
-				i=j;
-				closedParenthesis = true;
-				
-				if(i == c.length()-1) {
-					operators.get(operators.size() - 1).secondValue = parenthesisResult;
+					// Get the square root.
+					if(i > 0) {
+						if(c.charAt(i-1) == '√') {
+							parenthesisResult = Math.sqrt(parenthesisResult);
+						}
+					}
+					
+					// Jump forward to position after parentheses.
+					i=j;
+					closedParenthesis = true;
+					
+					if(i == c.length()-1) {
+						if(operators.size() > 0) {
+							operators.get(operators.size() - 1).secondValue = parenthesisResult;
+						}
+					}
 				}
+				
+				if(isOperator(c.charAt(i)))
+				{	
+					Operator op1 = new Operator();
+					
+					if(closedParenthesis) {
+						
+						op1.firstValue = parenthesisResult;
+						closedParenthesis = false;
+						
+						if(operators.size() > 0) {		
+							operators.get(operators.size() - 1).secondValue = op1.firstValue;		
+						}
+					}
+					else {	
+						op1.firstValue=stringToDecimalLeft(c, i-1);	
+					}
+					
+					if(c.charAt(i+1) != '(') {		
+						op1.secondValue = stringToDecimalRight(c, i+1);
+						
+						if(c.charAt(i) == '-') {
+							op1.secondValue *= -1;
+						}
+					}
+					
+					op1.operator=Character.toString(c.charAt(i));		
+					operators.add(op1);	
+				}
+			}	
+			
+			// possible solution to end calculation without anything outside the parenthesis.
+			if(closedParenthesis && operators.size() < 1) {
+				Operator op = new Operator();
+				op.firstValue= parenthesisResult;
+				op.secondValue = 0;
+				op.operator = "+";
+				operators.add(op);
 			}
 			
-			if(isOperator(c.charAt(i)))
-			{	
-				Operator op1 = new Operator();
-				
-				if(closedParenthesis) {
-					
-					op1.firstValue = parenthesisResult;
-					closedParenthesis = false;
-					
-					if(operators.size() > 0) {		
-						operators.get(operators.size() - 1).secondValue = op1.firstValue;		
-					}
-				}
-				else {	
-					op1.firstValue=stringToDecimalLeft(c, i-1);	
-				}
-				
-				if(c.charAt(i+1) != '(') {		
-					op1.secondValue = stringToDecimalRight(c, i+1);
-					
-					if(c.charAt(i) == '-') {
-						op1.secondValue *= -1;
-					}
-				}
-				
-				op1.operator=Character.toString(c.charAt(i));
-				
-				operators.add(op1);	
-			}
-		}	
-		
-		return calculate(operators);
+			return calculate(operators);
+		}
+		catch(Exception ex) {
+			System.out.print(ex.getMessage());
+			return 0;
+		}
 	}
 	
 	// Where possibly nested parenthesis closes.

@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class GUI extends JFrame 
 {
@@ -14,6 +16,11 @@ public class GUI extends JFrame
 		
 		public GUI() {
 			super("Calculator");
+			
+			// TODO: decimal point.
+			//DecimalFormat df2 = new DecimalFormat("#,##");           
+			//df2.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.GERMANY));
+			Locale.setDefault(Locale.GERMANY);
 			
 			//setSize(400, 600);
 		  //  setLayout(null);
@@ -66,9 +73,12 @@ public class GUI extends JFrame
 		
 		    button10.addActionListener(handler);
 		    
+		    
 		    JButton button11 = new JButton("+/-");	
 		    button11.addActionListener(handler);
 		   
+		    JButton button12 = new JButton("√");
+		    button12.addActionListener(handler);
 		    
 			// Create a panel with GridBagLayout
 		    JPanel panel = new JPanel();
@@ -89,6 +99,8 @@ public class GUI extends JFrame
 	        addObjects(button8, panel, layout, constraints, 1, 2, 1, 1);  
 	        addObjects(button9, panel, layout, constraints, 2, 2, 1, 1);
 	        addObjects(button10, panel, layout, constraints, 3, 1, 1, 1);
+	        
+	        addObjects(button12, panel, layout, constraints, 2,1,1,1);
 	        
 	        // side-bar buttons
 	        addObjects(button1, panel, layout, constraints, 3, 2, 1, 1);
@@ -171,7 +183,7 @@ public class GUI extends JFrame
 				}
 				else
 				{
-					input += event.getActionCommand();
+					input = textField.getText() + event.getActionCommand();
 					//JOptionPane.showMessageDialog(null, input);
 					textField.setText(input);
 				}
