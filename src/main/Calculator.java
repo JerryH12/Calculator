@@ -81,13 +81,14 @@ public class Calculator {
 				}
 			}	
 			
-			// possible solution to end calculation without anything outside the parenthesis.
+			// A number entered without calculation.
+			if(!closedParenthesis && operators.size() < 1) {
+				return stringToDecimalLeft(c, c.length()-1);	
+			}
+			
+			// Ended with parenthesis and no further calculation.
 			if(closedParenthesis && operators.size() < 1) {
-				Operator op = new Operator();
-				op.firstValue= parenthesisResult;
-				op.secondValue = 0;
-				op.operator = "+";
-				operators.add(op);
+				return  parenthesisResult;
 			}
 			
 			return calculate(operators);
