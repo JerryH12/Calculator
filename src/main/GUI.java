@@ -12,8 +12,8 @@ public class GUI extends JFrame
 {
 		public JTextField textField;	
 		private MyEventHandler handler;
-		String input="";
-		
+		//String input="";
+		  
 		public GUI() {
 			super("Calculator");
 			
@@ -29,6 +29,8 @@ public class GUI extends JFrame
 		    Font font1 = new Font("Arial", Font.PLAIN, 40);    
 		    textField = new JTextField();
 		    textField.setFont(font1);
+		   // textField.setEnabled(false);
+		  textField.setEditable(false);
 			    
 		    // Create operator buttons.  
 		    JButton button1 = new JButton("/");
@@ -61,13 +63,13 @@ public class GUI extends JFrame
 		
 		    button7.addActionListener(handler);
 		    
-		    JButton button8 = new JButton("(");
+		    JButton button8 = new JButton("()");
 		
 		    button8.addActionListener(handler);
 		    
-		    JButton button9 = new JButton(")");
+		   // JButton button9 = new JButton(")");
 		
-		    button9.addActionListener(handler);
+		  //  button9.addActionListener(handler);
 		    
 		    JButton button10 = new JButton("X");
 		
@@ -97,7 +99,7 @@ public class GUI extends JFrame
 	        // top-row buttons
 	        addObjects(button7, panel, layout, constraints, 0, 2, 1, 1);
 	        addObjects(button8, panel, layout, constraints, 1, 2, 1, 1);  
-	        addObjects(button9, panel, layout, constraints, 2, 2, 1, 1);
+	       // addObjects(button9, panel, layout, constraints, 2, 2, 1, 1);
 	        addObjects(button10, panel, layout, constraints, 3, 1, 1, 1);
 	        
 	        addObjects(button12, panel, layout, constraints, 2,1,1,1);
@@ -161,6 +163,7 @@ public class GUI extends JFrame
 		{	
 			public void actionPerformed(ActionEvent event) 
 			{
+				//textField.setEnabled(true);
 				if(event.getActionCommand() == "=") {
 					String calc = textField.getText();
 					double result = Calculator.prepareCalculation(calc);
@@ -170,7 +173,6 @@ public class GUI extends JFrame
 				else if(event.getActionCommand() == "C")
 				{
 					textField.setText("");
-					input = "";
 				}
 				else if(event.getActionCommand() == "X")
 				{
@@ -180,13 +182,56 @@ public class GUI extends JFrame
 					if(text.length() > 0) {
 						textField.setText(text.substring(0, text.length()-1));
 					}
+				} 
+				else if(event.getActionCommand() == "()")
+				{
+					String text = textField.getText();
+							
+					if(text.length() > 0) 
+					{
+						char ch = (text.charAt(text.length()-1));
+						
+						if(ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '√' || ch == '(')
+						{
+							textField.setText(text + "(");
+							
+						} // Previous a numeric value or closed parenthesis.
+						else if(ParenthesisDepth() == 0 && (Character.getNumericValue(ch) > -1 || ch==')')) 
+						{
+							textField.setText(text + "*(");
+						}
+						else
+						{
+							textField.setText(text + ")");
+						}
+					}
+					else 
+					{
+						textField.setText("(");	
+					}
+					
 				}
 				else
-				{
-					input = textField.getText() + event.getActionCommand();
-					//JOptionPane.showMessageDialog(null, input);
-					textField.setText(input);
+				{	
+					textField.setText(textField.getText() + event.getActionCommand());		
 				}
+			}
+			
+			public int ParenthesisDepth() 
+			{
+				String text = textField.getText();
+				int depth = 0;
+				
+				for(int n = 0; n < text.length(); n++) {
+					if(text.charAt(n) == '(') {
+						depth++;
+					}
+					
+					if(text.charAt(n) == ')') {
+						depth--;
+					}
+				}
+				return depth;
 			}
 		}
 		

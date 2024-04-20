@@ -7,6 +7,9 @@ A calculator seemed like a nice challenge to improve my coding skills.
 <h2>Status of the project</h2>
 I started working on the calculator in January 2024. Been doing it occasionally since then. 
 
+<h3>2024-04-20</h3>
+It will automatically select open or closed parenthesis depending on what was previously written.
+
 <h3>2024-04-02</h3>
 In this version the calculator will accept just a number or something like the  square root of (16) or (((16))).
 
