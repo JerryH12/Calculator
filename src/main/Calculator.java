@@ -170,6 +170,10 @@ public class Calculator {
 			{
 				if(isOperator(c.charAt(i)))
 				{
+					// TODO: Dealing with negative numbers.
+					//if(c.charAt(i) != '-') {
+						//break;
+					//}
 					break;
 				}
 				
@@ -195,7 +199,8 @@ public class Calculator {
 	
 	public static double calculate(ArrayList<Operator> operators) 
 	{	
-		String[] op={"*","/","+","-"};
+		// Ändrade ordning. Division först. Annars kommer multiplikation till höger om bråk att multiplicera nämnare.
+		String[] op={"/","*","+","-"};
 	
 		int j;
 		
