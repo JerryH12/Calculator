@@ -7,6 +7,9 @@ A calculator seemed like a nice challenge to improve my coding skills.
 <h2>Status of the project</h2>
 I started working on the calculator in January 2024. Been doing it occasionally since then. 
 
+<h3>2024-05-19</h3>
+Negative values. For instance -4+3 or 2--2 will be calculated correctly. It's possible to type the wrong format. Which doesn't crash the application but gives the wrong result. Can be confusing. Need to work on the user-friendliness. Decimals now have up to 10 digits. Can continue to calculate from the last result.
+
 <h3>2024-04-20</h3>
 It will automatically select open or closed parenthesis depending on what was previously written.
 

@@ -6,13 +6,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class GUI extends JFrame 
 {
-		public JTextField textField;	
+		public JTextField textField;
+		public ArrayList<Integer> negations = new ArrayList<Integer>(); // Keeping track of the minus signs.	
 		private MyEventHandler handler;
-		//String input="";
 		  
 		public GUI() {
 			super("Calculator");
@@ -166,9 +168,26 @@ public class GUI extends JFrame
 				//textField.setEnabled(true);
 				if(event.getActionCommand() == "=") {
 					String calc = textField.getText();
-					double result = Calculator.prepareCalculation(calc);
-					//double result = Calculator.calculate();
-					textField.setText(result+"");
+					StringBuilder sb = new StringBuilder(calc);
+					
+					// convert
+					for(int index : negations)
+					{		
+						sb.setCharAt(index, 'n');			
+					}
+					
+					//calc = sb.toString();
+					double result = Calculator.prepareCalculation(sb.toString());
+					
+					
+					Locale currentLocale = Locale.getDefault();
+					NumberFormat nf_out = NumberFormat.getNumberInstance(currentLocale);
+					nf_out.setMaximumFractionDigits(10);
+					String output = nf_out.format(result);
+					
+					
+					textField.setText(output);
+					negations.clear();
 				}
 				else if(event.getActionCommand() == "C")
 				{
@@ -176,8 +195,6 @@ public class GUI extends JFrame
 				}
 				else if(event.getActionCommand() == "X")
 				{
-					//input = input.substring(0, input.length() - 1);
-					//textField.setText(input);
 					String text = textField.getText();
 					if(text.length() > 0) {
 						textField.setText(text.substring(0, text.length()-1));
@@ -210,6 +227,13 @@ public class GUI extends JFrame
 						textField.setText("(");	
 					}
 					
+				}
+				else if(event.getActionCommand() == "+/-") 
+				{
+					// Convert minus signs internally to separate them from operators.
+					textField.setText(textField.getText() + "-");
+					int index = textField.getText().length() - 1;
+					negations.add(index);
 				}
 				else
 				{	

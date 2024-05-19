@@ -51,12 +51,15 @@ public class Calculator {
 					}
 				}
 				
+				// Look for operator.
 				if(isOperator(c.charAt(i)))
 				{	
 					Operator op1 = new Operator();
 					
+					// Found a closed parenthesis.
 					if(closedParenthesis) {
 						
+						// Set value from calculated parenthesis.
 						op1.firstValue = parenthesisResult;
 						closedParenthesis = false;
 						
@@ -68,8 +71,10 @@ public class Calculator {
 						op1.firstValue=stringToDecimalLeft(c, i-1);	
 					}
 					
+					// Not continuing with a parenthesis.
 					if(c.charAt(i+1) != '(') {		
 						op1.secondValue = stringToDecimalRight(c, i+1);
+						
 						
 						if(c.charAt(i) == '-') {
 							op1.secondValue *= -1;
@@ -132,9 +137,14 @@ public class Calculator {
 				
 			while(i >= 0) 
 			{
+				
+				
 				if(isOperator(c.charAt(i))){
+					
+					// Both operator and negative sign. Example (-3-2*-5).
 					if(c.charAt(i) == '-') {
 						number *= -1;
+						
 					}
 					break;
 				}
@@ -145,6 +155,11 @@ public class Calculator {
 					decimal = 1;
 					i--;
 					continue;
+				}
+				
+				if(c.charAt(i) == 'n') {
+					number *= -1;
+					break;
 				}
 				
 				number+=Character.getNumericValue(c.charAt(i))*decimal;
@@ -170,10 +185,6 @@ public class Calculator {
 			{
 				if(isOperator(c.charAt(i)))
 				{
-					// TODO: Dealing with negative numbers.
-					//if(c.charAt(i) != '-') {
-						//break;
-					//}
 					break;
 				}
 				
