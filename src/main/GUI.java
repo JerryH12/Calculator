@@ -171,12 +171,26 @@ public class GUI extends JFrame
 					StringBuilder sb = new StringBuilder(calc);
 					
 					// convert
-					for(int index : negations)
-					{		
-						sb.setCharAt(index, 'n');			
-					}
+					//for(int index : negations)
+					//{		
+						//sb.setCharAt(index, 'n');			
+					//}
 					
 					//calc = sb.toString();
+				
+					if(sb.charAt(0) == '-') 
+					{
+						sb.setCharAt(0, 'n');	
+					}
+					
+					for(int n = 1; n < sb.length(); n++) 
+					{
+						if(sb.charAt(n) == '-' && Character.getNumericValue(sb.charAt(n-1)) < 0) 
+						{
+							sb.setCharAt(n, 'n');	
+						}
+					}
+					
 					double result = Calculator.prepareCalculation(sb.toString());
 					
 					
