@@ -5,6 +5,9 @@ import java.util.*;
 
 import javax.swing.JFrame;
 
+
+// TODO: A bug discovered. 2--2*4=-6 is the wrong result. 
+// 2--2+4=0 also wrong.
 public class Calculator {
 	
 	public static void main(String[] args) {
@@ -76,9 +79,9 @@ public class Calculator {
 						op1.secondValue = stringToDecimalRight(c, i+1);
 						
 						
-						if(c.charAt(i) == '-') {
+						/*if(c.charAt(i) == '-') {
 							op1.secondValue *= -1;
-						}
+						}*/
 					}
 					
 					op1.operator=Character.toString(c.charAt(i));		
@@ -142,10 +145,10 @@ public class Calculator {
 				if(isOperator(c.charAt(i))){
 					
 					// Both operator and negative sign. Example (-3-2*-5).
-					if(c.charAt(i) == '-') {
+					/*if(c.charAt(i) == '-') {
 						number *= -1;
 						
-					}
+					}*/
 					break;
 				}
 				
@@ -211,17 +214,17 @@ public class Calculator {
 	public static double calculate(ArrayList<Operator> operators) 
 	{	
 		// Ändrade ordning. Division först. Annars kommer multiplikation till höger om bråk att multiplicera nämnare.
-		String[] op={"/","*","+","-"};
+		String[] op={"*","/","+","-"};
 	
 		int j;
 		
 		if(operators.size()>1) {
 			
-			for(int i=0; i < 4; i++) {
+			for(int i=1; i < 4; i+=2) {
 				j=0;
 				while(j<operators.size()){
 					
-					if(operators.get(j).operator.equals(op[i])) {
+					if(operators.get(j).operator.equals(op[i]) || operators.get(j).operator.equals(op[i-1]) ) {
 						
 						double value=operators.get(j).calculate();
 						if(j>0) {
