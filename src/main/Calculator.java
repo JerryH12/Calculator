@@ -6,8 +6,8 @@ import java.util.*;
 import javax.swing.JFrame;
 
 
-// TODO: A bug discovered. 2--2*4=-6 is the wrong result. 
-// 2--2+4=0 also wrong.
+// TODO: A bug discovered. 100 ÷ (6 + 7 × 2) – 5 
+// Fixed but needs evaluation. In this case the error because minus is preceded by a parenthesis.
 public class Calculator {
 	
 	public static void main(String[] args) {

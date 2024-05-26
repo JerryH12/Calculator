@@ -185,7 +185,7 @@ public class GUI extends JFrame
 					
 					for(int n = 1; n < sb.length(); n++) 
 					{
-						if(sb.charAt(n) == '-' && Character.getNumericValue(sb.charAt(n-1)) < 0) 
+						if(sb.charAt(n) == '-' && sb.charAt(n-1) != ')' && Character.getNumericValue(sb.charAt(n-1)) < 0) 
 						{
 							sb.setCharAt(n, 'n');	
 						}
