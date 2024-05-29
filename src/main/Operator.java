@@ -4,6 +4,7 @@ public class Operator {
 	public String operator = "";
 	public double firstValue=0;
 	public double secondValue=0;
+	public int order = 0;
 	
 	public Operator(String op, double value1, double value2) {
 		operator=op;
@@ -15,9 +16,37 @@ public class Operator {
 		
 	}
 	
+	// Set the operator and order of operations.
+	public void setOperator(String op) {
+		operator = op;
+		
+		switch(operator) {
+		case "^":
+			order = 0;
+			break;
+		case "*":
+			order = 1;
+			break;
+		case "/":
+			order = 1;
+			break;
+		case "+":
+			order = 2;
+			break;
+		case "-":
+			order = 2;
+			break;
+		default:
+			order=0;
+		}
+	}
+	
 	public double calculate() {
 		double result;
 		switch(operator) {
+			case "^":
+				result = power();
+				break;
 			case "*":
 				result= multiply();
 				break;
@@ -35,6 +64,11 @@ public class Operator {
 				result=0;
 		}
 		return result;
+	}
+	
+	public double power() {
+		return Math.pow(firstValue, secondValue);
+		//return 7.0;
 	}
 	
 	public double multiply() {

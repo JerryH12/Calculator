@@ -84,6 +84,9 @@ public class GUI extends JFrame
 		    JButton button12 = new JButton("√");
 		    button12.addActionListener(handler);
 		    
+		    JButton button13 = new JButton("x²");
+		    button13.addActionListener(handler);
+		    
 			// Create a panel with GridBagLayout
 		    JPanel panel = new JPanel();
 		    GridBagLayout layout = new GridBagLayout();    
@@ -105,6 +108,7 @@ public class GUI extends JFrame
 	        addObjects(button10, panel, layout, constraints, 3, 1, 1, 1);
 	        
 	        addObjects(button12, panel, layout, constraints, 2,1,1,1);
+	        addObjects(button13, panel, layout, constraints, 1,1,1,1);
 	        
 	        // side-bar buttons
 	        addObjects(button1, panel, layout, constraints, 3, 2, 1, 1);
@@ -214,6 +218,14 @@ public class GUI extends JFrame
 						textField.setText(text.substring(0, text.length()-1));
 					}
 				} 
+				else if(event.getActionCommand() == "√") 
+				{
+					textField.setText(textField.getText() + event.getActionCommand() + "(");	
+				}
+				else if(event.getActionCommand() == "x²") 
+				{
+					textField.setText(textField.getText() + "^(2)");	
+				}
 				else if(event.getActionCommand() == "()")
 				{
 					String text = textField.getText();

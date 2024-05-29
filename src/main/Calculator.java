@@ -2,17 +2,12 @@ package main;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
-
 import javax.swing.JFrame;
 
-
-// TODO: A bug discovered. 100 ÷ (6 + 7 × 2) – 5 
-// Fixed but needs evaluation. In this case the error because minus is preceded by a parenthesis.
 public class Calculator {
 	
 	public static void main(String[] args) {
-		
-		
+			
 		GUI gui1 = new GUI();
 		gui1.pack();
 		gui1. setVisible(true);
@@ -84,7 +79,7 @@ public class Calculator {
 						}*/
 					}
 					
-					op1.operator=Character.toString(c.charAt(i));		
+					op1.setOperator(Character.toString(c.charAt(i)));		
 					operators.add(op1);	
 				}
 			}	
@@ -139,16 +134,9 @@ public class Calculator {
 			int decimal=1;
 				
 			while(i >= 0) 
-			{
-				
-				
+			{	
 				if(isOperator(c.charAt(i))){
 					
-					// Both operator and negative sign. Example (-3-2*-5).
-					/*if(c.charAt(i) == '-') {
-						number *= -1;
-						
-					}*/
 					break;
 				}
 				
@@ -205,7 +193,7 @@ public class Calculator {
 	}
 
 	private static boolean isOperator(char c) {
-		if(c=='*' || c=='/' || c=='+' || c=='-') {
+		if(c=='^' || c=='*' || c=='/' || c=='+' || c=='-') {
 			return true;
 		}
 		return false;
@@ -213,20 +201,21 @@ public class Calculator {
 	
 	public static double calculate(ArrayList<Operator> operators) 
 	{	
-		// Ändrade ordning. Division först. Annars kommer multiplikation till höger om bråk att multiplicera nämnare.
-		String[] op={"*","/","+","-"};
-	
 		int j;
 		
-		if(operators.size()>1) {
-			
-			for(int i=1; i < 4; i+=2) {
+		if(operators.size()>1) 
+		{		
+			// Order of operations from 0 to 2.
+			for(int n = 0; n < 3; n++) 
+			{
 				j=0;
-				while(j<operators.size()){
-					
-					if(operators.get(j).operator.equals(op[i]) || operators.get(j).operator.equals(op[i-1]) ) {
-						
+				
+				while(j<operators.size())
+				{			
+					if(operators.get(j).order == n) 
+					{	
 						double value=operators.get(j).calculate();
+						
 						if(j>0) {
 							operators.get(j-1).secondValue=value;
 						}
@@ -239,15 +228,14 @@ public class Calculator {
 							operators.remove(j);
 							continue;	
 						}			
-					}	
+					}
+					
 					j++;
 				}
 			}
 		}
 		
-		//System.out.println("="+operators.get(0).calculate());
-		return operators.get(0).calculate();
-		
+		return operators.get(0).calculate();	
 	}
 	
 	public static void add(int a, int b) {
