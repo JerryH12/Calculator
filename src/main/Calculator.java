@@ -1,13 +1,33 @@
 package main;
-import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Calculator {
 	
 	public static void main(String[] args) {
 			
+		 try {
+	            // Set System L&F
+	        UIManager.setLookAndFeel(
+	            UIManager.getSystemLookAndFeelClassName());
+	    } 
+	    catch (UnsupportedLookAndFeelException e) {
+	       // handle exception
+	    }
+	    catch (ClassNotFoundException e) {
+	       // handle exception
+	    }
+	    catch (InstantiationException e) {
+	       // handle exception
+	    }
+	    catch (IllegalAccessException e) {
+	       // handle exception
+	    }
+		
+		
 		GUI gui1 = new GUI();
 		gui1.pack();
 		gui1. setVisible(true);
@@ -140,12 +160,17 @@ public class Calculator {
 					break;
 				}
 				
-				if(c.charAt(i) == ',') 
+				if(c.charAt(i) == '.') 
 				{
 					number = (number / decimal);
 					decimal = 1;
 					i--;
 					continue;
+				}
+				
+				if(c.charAt(i) == 'π') {
+					number = Math.PI;
+					break;
 				}
 				
 				if(c.charAt(i) == 'n') {

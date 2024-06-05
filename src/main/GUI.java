@@ -19,10 +19,7 @@ public class GUI extends JFrame
 		public GUI() {
 			super("Calculator");
 			
-			// TODO: decimal point.
-			//DecimalFormat df2 = new DecimalFormat("#,##");           
-			//df2.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.GERMANY));
-			Locale.setDefault(Locale.GERMANY);
+			
 			
 			//setSize(400, 600);
 		  //  setLayout(null);
@@ -32,8 +29,12 @@ public class GUI extends JFrame
 		    textField = new JTextField();
 		    textField.setFont(font1);
 		   // textField.setEnabled(false);
-		  textField.setEditable(false);
+		    textField.setEditable(false);
 			    
+
+			Locale locale = new Locale("English", "IN");	
+		    textField.setLocale(locale);
+		    
 		    // Create operator buttons.  
 		    JButton button1 = new JButton("/");
 		
@@ -56,7 +57,7 @@ public class GUI extends JFrame
 		 
 		    button5.addActionListener(handler);
 		    
-		    JButton button6 = new JButton(",");
+		    JButton button6 = new JButton(".");
 		
 		    button6.addActionListener(handler);
 		    
@@ -87,6 +88,9 @@ public class GUI extends JFrame
 		    JButton button13 = new JButton("x²");
 		    button13.addActionListener(handler);
 		    
+		    JButton button14 = new JButton("π");
+		    button14.addActionListener(handler);
+		    
 			// Create a panel with GridBagLayout
 		    JPanel panel = new JPanel();
 		    GridBagLayout layout = new GridBagLayout();    
@@ -109,6 +113,7 @@ public class GUI extends JFrame
 	        
 	        addObjects(button12, panel, layout, constraints, 2,1,1,1);
 	        addObjects(button13, panel, layout, constraints, 1,1,1,1);
+	        addObjects(button14, panel, layout, constraints, 0,1,1,1);
 	        
 	        // side-bar buttons
 	        addObjects(button1, panel, layout, constraints, 3, 2, 1, 1);
@@ -173,14 +178,6 @@ public class GUI extends JFrame
 				if(event.getActionCommand() == "=") {
 					String calc = textField.getText();
 					StringBuilder sb = new StringBuilder(calc);
-					
-					// convert
-					//for(int index : negations)
-					//{		
-						//sb.setCharAt(index, 'n');			
-					//}
-					
-					//calc = sb.toString();
 				
 					if(sb.charAt(0) == '-') 
 					{
@@ -197,8 +194,8 @@ public class GUI extends JFrame
 					
 					double result = Calculator.prepareCalculation(sb.toString());
 					
-					
-					Locale currentLocale = Locale.getDefault();
+					Locale locale = new Locale("English", "IN");
+					Locale currentLocale = locale;//Locale.getDefault();
 					NumberFormat nf_out = NumberFormat.getNumberInstance(currentLocale);
 					nf_out.setMaximumFractionDigits(10);
 					String output = nf_out.format(result);
@@ -220,6 +217,19 @@ public class GUI extends JFrame
 				} 
 				else if(event.getActionCommand() == "√") 
 				{
+					String text = textField.getText();
+					
+					if(text.length() > 0) 
+					{
+						char ch = (text.charAt(text.length()-1));
+						
+						if(ch == ')' || Character.getNumericValue(ch) > -1)
+						{
+							textField.setText(text + "*");
+							
+						}
+					}
+					
 					textField.setText(textField.getText() + event.getActionCommand() + "(");	
 				}
 				else if(event.getActionCommand() == "x²") 

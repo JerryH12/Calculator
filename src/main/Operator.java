@@ -68,7 +68,6 @@ public class Operator {
 	
 	public double power() {
 		return Math.pow(firstValue, secondValue);
-		//return 7.0;
 	}
 	
 	public double multiply() {
