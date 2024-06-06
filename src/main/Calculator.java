@@ -1,5 +1,5 @@
 package main;
-import java.text.DecimalFormatSymbols;
+
 import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -151,8 +151,15 @@ public class Calculator {
 		
 		try {
 			double number=0;
-			int decimal=1;
-				
+			double decimal=1.0;
+			double percent = 1.0;
+			
+			if(c.charAt(i) == '%') 
+			{
+				percent = 0.01;
+				i--;
+			}
+			
 			while(i >= 0) 
 			{	
 				if(isOperator(c.charAt(i))){
@@ -178,7 +185,7 @@ public class Calculator {
 					break;
 				}
 				
-				number+=Character.getNumericValue(c.charAt(i))*decimal;
+				number+=Character.getNumericValue(c.charAt(i))*decimal*percent;
 				decimal*=10;
 				
 				i--;

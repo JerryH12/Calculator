@@ -20,14 +20,15 @@ public class GUI extends JFrame
 			super("Calculator");
 			
 			
-			
+			// TODO: Max number of digits.
 			//setSize(400, 600);
 		  //  setLayout(null);
 		   handler = new MyEventHandler();
 		    
-		    Font font1 = new Font("Arial", Font.PLAIN, 40);    
+		    Font font1 = new Font("Arial", Font.PLAIN, 32);    
 		    textField = new JTextField();
 		    textField.setFont(font1);
+		   
 		   // textField.setEnabled(false);
 		    textField.setEditable(false);
 			    
@@ -36,60 +37,47 @@ public class GUI extends JFrame
 		    textField.setLocale(locale);
 		    
 		    // Create operator buttons.  
-		    JButton button1 = new JButton("/");
-		
-		    button1.setBounds(0, 0, 50, 50);
-		    button1.addActionListener(handler);
+		    JButton divideButton = new JButton("/");
+		    divideButton.addActionListener(handler);
 		        
-		    JButton button2 = new JButton("*");
-		 
-		    button2.addActionListener(handler);
+		    JButton multiplyButton = new JButton("*");
+		    multiplyButton.addActionListener(handler);
 		    
-		    JButton button3 = new JButton("+");
-	
-		    button3.addActionListener(handler);
+		    JButton addButton = new JButton("+");
+		    addButton.addActionListener(handler);
 		    
-		    JButton button4 = new JButton("-");
-		
-		    button4.addActionListener(handler);
+		    JButton subtractButton = new JButton("-");
+		    subtractButton.addActionListener(handler);
 		    
-		    JButton button5 = new JButton("=");
-		 
-		    button5.addActionListener(handler);
+		    JButton equalsButton = new JButton("=");
+		    equalsButton.addActionListener(handler);
 		    
-		    JButton button6 = new JButton(".");
-		
-		    button6.addActionListener(handler);
+		    JButton decimalButton = new JButton(".");
+		    decimalButton.addActionListener(handler);
+		    	    
+		    JButton clearButton = new JButton("C");
+		    clearButton.addActionListener(handler);
 		    
+		    JButton percentButton = new JButton("%");
+		    percentButton.addActionListener(handler);
 		    
-		    JButton button7 = new JButton("C");
-		
-		    button7.addActionListener(handler);
+		    JButton groupButton = new JButton("()");
+		    groupButton.addActionListener(handler);
 		    
-		    JButton button8 = new JButton("()");
-		
-		    button8.addActionListener(handler);
-		    
-		   // JButton button9 = new JButton(")");
-		
-		  //  button9.addActionListener(handler);
-		    
-		    JButton button10 = new JButton("X");
-		
-		    button10.addActionListener(handler);
-		    
-		    
-		    JButton button11 = new JButton("+/-");	
-		    button11.addActionListener(handler);
+		    JButton deleteButton = new JButton("X");
+		    deleteButton.addActionListener(handler);
+		        
+		    JButton negativeButton = new JButton("+/-");	
+		    negativeButton.addActionListener(handler);
 		   
-		    JButton button12 = new JButton("√");
-		    button12.addActionListener(handler);
+		    JButton squareRootButton = new JButton("√");
+		    squareRootButton.addActionListener(handler);
 		    
-		    JButton button13 = new JButton("x²");
-		    button13.addActionListener(handler);
+		    JButton squaredButton = new JButton("x²");
+		    squaredButton.addActionListener(handler);
 		    
-		    JButton button14 = new JButton("π");
-		    button14.addActionListener(handler);
+		    JButton PiButton = new JButton("π");
+		    PiButton.addActionListener(handler);
 		    
 			// Create a panel with GridBagLayout
 		    JPanel panel = new JPanel();
@@ -101,30 +89,31 @@ public class GUI extends JFrame
 	        constraints.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
 	        constraints.weightx = 1; // Expand horizontally
 	        constraints.weighty = 1; // Expand vertically
-	     
+	        constraints.ipadx = 25;
+	        constraints.ipady = 25;
+	        
 	        // text field        
 	        addObjects(textField, panel, layout, constraints, 0, 0, 4, 1);
 	        
 	        // top-row buttons
-	        addObjects(button7, panel, layout, constraints, 0, 2, 1, 1);
-	        addObjects(button8, panel, layout, constraints, 1, 2, 1, 1);  
-	       // addObjects(button9, panel, layout, constraints, 2, 2, 1, 1);
-	        addObjects(button10, panel, layout, constraints, 3, 1, 1, 1);
-	        
-	        addObjects(button12, panel, layout, constraints, 2,1,1,1);
-	        addObjects(button13, panel, layout, constraints, 1,1,1,1);
-	        addObjects(button14, panel, layout, constraints, 0,1,1,1);
+	        addObjects(clearButton, panel, layout, constraints, 0, 2, 1, 1);
+	        addObjects(percentButton, panel, layout, constraints, 2, 2, 1, 1); 
+	        addObjects(groupButton, panel, layout, constraints, 1, 2, 1, 1);  	       
+	        addObjects(deleteButton, panel, layout, constraints, 3, 1, 1, 1);     
+	        addObjects(squareRootButton, panel, layout, constraints, 2,1,1,1);
+	        addObjects(squaredButton, panel, layout, constraints, 1,1,1,1);
+	        addObjects(PiButton, panel, layout, constraints, 0,1,1,1);
 	        
 	        // side-bar buttons
-	        addObjects(button1, panel, layout, constraints, 3, 2, 1, 1);
-	        addObjects(button2, panel, layout, constraints, 3, 3, 1, 1);
-	        addObjects(button3, panel, layout, constraints, 3, 4, 1, 1);
-	        addObjects(button4, panel, layout, constraints, 3, 5, 1, 1); 
-	        addObjects(button5, panel, layout, constraints, 3, 6, 1, 1);
+	        addObjects(divideButton, panel, layout, constraints, 3, 2, 1, 1);
+	        addObjects(multiplyButton, panel, layout, constraints, 3, 3, 1, 1);
+	        addObjects(addButton, panel, layout, constraints, 3, 4, 1, 1);
+	        addObjects(subtractButton, panel, layout, constraints, 3, 5, 1, 1); 
+	        addObjects(equalsButton, panel, layout, constraints, 3, 6, 1, 1);
 	        
 	        // bottom-row buttons
-	        addObjects(button6, panel, layout, constraints, 2, 6, 1, 1);   
-	        addObjects(button11, panel, layout, constraints, 0, 6, 1, 1);
+	        addObjects(decimalButton, panel, layout, constraints, 2, 6, 1, 1);   
+	        addObjects(negativeButton, panel, layout, constraints, 0, 6, 1, 1);
 	        
 	        // number buttons
 	        JButton btn7 = new JButton("7");
@@ -304,6 +293,7 @@ public class GUI extends JFrame
 	        gbc.gridheight = gridheight;
 
 	        layout.setConstraints(component1, gbc);
+	       // component1.setFont(new Font("Arial", Font.PLAIN, 12));
 	        container1.add(component1);
 	    }
 }
