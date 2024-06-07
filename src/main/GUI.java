@@ -1,14 +1,16 @@
 package main;
 import javax.swing.*;
+import javax.swing.text.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GUI extends JFrame 
 {
@@ -19,20 +21,18 @@ public class GUI extends JFrame
 		public GUI() {
 			super("Calculator");
 			
-			
-			// TODO: Max number of digits.
-			//setSize(400, 600);
-		  //  setLayout(null);
-		   handler = new MyEventHandler();
+			handler = new MyEventHandler();
 		    
 		    Font font1 = new Font("Arial", Font.PLAIN, 32);    
-		    textField = new JTextField();
+		    textField = new JTextField(15);
+		    
+		    textField.setDocument(new PlainDocument());
+		    ((AbstractDocument) textField.getDocument()).setDocumentFilter(new TextLengthFilter());
+		      
 		    textField.setFont(font1);
 		   
-		   // textField.setEnabled(false);
 		    textField.setEditable(false);
 			    
-
 			Locale locale = new Locale("English", "IN");	
 		    textField.setLocale(locale);
 		    
@@ -89,9 +89,9 @@ public class GUI extends JFrame
 	        constraints.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
 	        constraints.weightx = 1; // Expand horizontally
 	        constraints.weighty = 1; // Expand vertically
-	        constraints.ipadx = 25;
-	        constraints.ipady = 25;
-	        
+	        constraints.ipadx = 20;
+	        constraints.ipady = 20;
+	       
 	        // text field        
 	        addObjects(textField, panel, layout, constraints, 0, 0, 4, 1);
 	        
@@ -159,13 +159,38 @@ public class GUI extends JFrame
 		    add(panel);
 		}	
 		
+		class TextLengthFilter extends DocumentFilter {
+		   
+		    public void insertString(FilterBypass fb, int offset, String text, javax.swing.text.AttributeSet attr) throws BadLocationException {
+		         
+		        Pattern pattern = Pattern.compile("[0-9]{16}|\\.[0-9]{11}");
+		        Matcher matcher = pattern.matcher(text);
+		        boolean matchFound = matcher.find();
+		        
+		        if(!matchFound) {
+		        	 super.insertString(fb, offset, text, attr);
+		        }
+		    }
+ 
+		    public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws BadLocationException {
+		      
+		        Pattern pattern = Pattern.compile("[0-9]{16}|\\.[0-9]{11}");
+		        Matcher matcher = pattern.matcher(text);
+		        boolean matchFound = matcher.find();
+		        
+		        if(!matchFound) {
+		        	 super.replace(fb, offset, length, text, attrs);
+		        }
+		    }
+		}
+
 		private class MyEventHandler implements ActionListener 
 		{	
 			public void actionPerformed(ActionEvent event) 
 			{
-				//textField.setEnabled(true);
 				if(event.getActionCommand() == "=") {
-					String calc = textField.getText();
+					String calc = textField.getText().replace(",", "");
+					
 					StringBuilder sb = new StringBuilder(calc);
 				
 					if(sb.charAt(0) == '-') 
@@ -181,7 +206,7 @@ public class GUI extends JFrame
 						}
 					}
 					
-					double result = Calculator.prepareCalculation(sb.toString());
+					double result = Calculator.prepareCalculation(sb.toString().strip());
 					
 					Locale locale = new Locale("English", "IN");
 					Locale currentLocale = locale;//Locale.getDefault();
